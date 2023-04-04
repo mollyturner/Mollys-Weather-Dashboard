@@ -9,56 +9,71 @@ let cityTemp = "";
 let cityWind = "";
 let cityHumidity = "";
 let cityIcon = "";
-var time = dayjs('2019-01-25').unix();
+var time = dayjs().unix();
 
 //function to call api for weather data
 function fetchWeather(event) {
     let APIkey = '03a65d5467760983e97224dadfa22af6';
     let cityName = document.getElementById('search-input').value;
     let url1 = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIkey}`;
-   
+
+
     fetch(url1, {
         method: "GET"
-    }) .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            cityLat = data[0].lat;
-            cityLon = data[0].lon;
-
-            console.log(cityLat);
-            console.log(cityLon);
-            console.log(time);
-
-            console.log("data: " + JSON.stringify(data));
-
-            
-        })
-
-        let url2 = `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${cityLat}&lon=${cityLon}&dt=${time}&appid=${APIkey}`;
-
-     fetch(url2, {
-        method: "GET"
-    })
-        .then((response) => {
+    }).then((response) => {
         return response.json();
+
+    }).then((data) => {
+        cityLat = data[0].lat;
+        cityLon = data[0].lon;
+
+        console.log("Lat: " + cityLat);
+        console.log("Lon: " + cityLon);
+        console.log("Time: " + time);
+        
+        console.log("API: " + APIkey);
+
+        let url2 = `https://api.openweathermap.org/data/2.5/weather?lat=${cityLat}&lon=${cityLon}&appid=${APIkey}&units=imperial`;
+
+        return fetch(url2)
+    }).then((response) => {
+
+        return response.json();
+    }).then((data) => {
+        cityTemp = data.main.temp;
+        cityWind = data.wind.speed;
+        cityHumidity = data.main.humidity;
+        cityIcon = data.weather[0].icon;
+
+        console.log('current temp: ' + cityTemp);
+        console.log('current wind: ' + cityWind);
+        console.log('current humidity: ' + cityHumidity);
+        console.log('current icon: ' + cityIcon);
+
+        let url3 = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${APIkey}&units=imperial`;
+
+        return fetch(url3)
+
+    }).then((response) => {
+
+        return response.json();
+    }).then((data) => {
+        console.log("data: " + JSON.stringify(data));
+
+        dayOneTemp = data.list[0].main.temp;
+        dayOneWind = data.list[0].wind.speed;
+        dayOneHumidity = data.list[0].main.humidity;
+        dayOneIcon = data.list[0].weather[0].icon;
+
+        for (var i = 1; i < 6; i++);
+        
+
+        console.log("Day1 temp: " + dayOneTemp);
+        console.log("Day1 wind: " + dayOneWind);
+        console.log("Day1 humidity: " + dayOneHumidity);
+        console.log("Day1 icon: " + dayOneIcon);
+
     })
-
-        .then((data) => {
-            cityTemp = data[0].current.temp;
-            cityWind = data[0].current.wind_speed;
-            cityHumidity = data[0].current.humidity;
-            cityIcon = data[0].current.weather.icon;
-
-            console.log(cityTemp);
-            console.log(cityWind);
-            console.log(cityHumidity);
-            console.log(cityIcon);
-            
-
-            console.log("data: " + JSON.stringify(data));
-
-        });
 };
 
 
