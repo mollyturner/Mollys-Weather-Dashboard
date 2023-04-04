@@ -1,0 +1,31 @@
+.grid-container {
+    display: grid;
+    /* grid-template-columns:  */
+    grid-auto-rows: minmax(100px, auto);
+    grid-row-gap: 20px;
+    grid-column-gap: 10px;
+    grid-template-areas:
+        "header header"
+        "sidebar content"
+        "siderbar content"
+}
+
+.nav-container {
+    background: rgb(0, 89, 255);
+    background: linear-gradient(90deg, rgba(0, 89, 255, 1) 30%, rgba(9, 9, 121, 1) 60%, rgba(2, 0, 36, 1) 100%);
+    color: white;
+    font-size: xx-large;
+    grid-area: header;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 30px;
+}
+
+.grid-item {
+    color: orange;
+    font-size: large;
+}
+
+.five-day {
+    border: ;
+}
