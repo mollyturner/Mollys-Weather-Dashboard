@@ -9,14 +9,12 @@ let cityTemp = "";
 let cityWind = "";
 let cityHumidity = "";
 let cityIcon = "";
-var time = dayjs().unix();
 
 //function to call api for weather data
 function fetchWeather(event) {
     let APIkey = '03a65d5467760983e97224dadfa22af6';
     let cityName = document.getElementById('search-input').value;
     let url1 = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIkey}`;
-
 
     fetch(url1, {
         method: "GET"
@@ -26,12 +24,6 @@ function fetchWeather(event) {
     }).then((data) => {
         cityLat = data[0].lat;
         cityLon = data[0].lon;
-
-        console.log("Lat: " + cityLat);
-        console.log("Lon: " + cityLon);
-        console.log("Time: " + time);
-        
-        console.log("API: " + APIkey);
 
         let url2 = `https://api.openweathermap.org/data/2.5/weather?lat=${cityLat}&lon=${cityLon}&appid=${APIkey}&units=imperial`;
 
@@ -58,21 +50,48 @@ function fetchWeather(event) {
 
         return response.json();
     }).then((data) => {
-        console.log("data: " + JSON.stringify(data));
 
-        dayOneTemp = data.list[0].main.temp;
-        dayOneWind = data.list[0].wind.speed;
-        dayOneHumidity = data.list[0].main.humidity;
-        dayOneIcon = data.list[0].weather[0].icon;
+        // console.log("data: " + JSON.stringify(data));
 
-        for (var i = 1; i < 6; i++);
+        let html = "";
+
         
 
-        console.log("Day1 temp: " + dayOneTemp);
-        console.log("Day1 wind: " + dayOneWind);
-        console.log("Day1 humidity: " + dayOneHumidity);
-        console.log("Day1 icon: " + dayOneIcon);
+        for (var i = 0; i < data.list.length; i++) {
+            console.log('index', i);
+            console.log(data.list[i].weather);
 
+            unix = data.list[i].dt;
+            unix2 = data.list[i].dt;
+            temp = data.list[i].main.temp;
+            wind = data.list[i].wind.speed;
+            humidity = data.list[i].main.humidity;
+            icon = data.list[i].weather[0].icon;
+
+            console.log(`time: ${unix}`);
+            console.log(`temp: ${temp}`);
+            console.log(`wind: ${wind}`);
+            console.log(`humidity: ${humidity}`);
+            console.log(`icon: ${icon}`);
+
+            var unixFormat = dayjs.unix(`${unix}`).format('M/D/YYYY');
+
+            console.log(unixFormat);
+
+            html += `
+            <div>
+            <h3>${unixFormat}</h3>
+            <img src="http://openweathermap.org/img/w/${icon}.png" alt="">
+            <p>${temp}</p>
+            <p>${wind}</p>
+            <p>${humidity}</p>
+            </div>`
+            
+            i = i+7;
+        }
+
+        // document.getElementsByClassName("five-day").innerHTML = html;
+        document.querySelector(".five-day").innerHTML = html;
     })
 };
 
