@@ -15,7 +15,6 @@ function fetchWeather(event) {
     let cityName = document.getElementById('search-input').value;
     let url1 = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIkey}`;
 
-
     fetch(url1, {
         method: "GET"
     }).then((response) => {
@@ -42,8 +41,7 @@ function fetchWeather(event) {
         return response.json();
     }).then((data) => {
 
-        // currentForecast(data.list);
-
+        currentForecast(data.list, cityName);
         weatherForecast(data.list);
     });
 
@@ -69,15 +67,43 @@ function fetchWeather(event) {
 
 // parse back from local storay
     let cities = localStorage.getItem('cityName');
-    
+
+    // display current weather
+    function currentForecast(forecastList, cityName) {
+        let html = '';
+
+            unix = forecastList[0].dt;
+            unix2 = forecastList[0].dt;
+            temp = forecastList[0].main.temp;
+            wind = forecastList[0].wind.speed;
+            humidity = forecastList[0].main.humidity;
+            icon = forecastList[0].weather[0].icon;
+            
+            var unixFormat = dayjs.unix(`${unix}`).format('M/D/YYYY');
+
+            html += `
+            <div class='current-day'>
+            <h2>${cityName} ${unixFormat}</h2>
+            <img src="http://openweathermap.org/img/w/${icon}.png" alt="">
+            <p>Temp: ${temp}</p>
+            <p>Wind: ${wind}</p>
+            <p>Humidity: ${humidity}%</p>
+            </div>`
+
+            document.querySelector(".current-search").innerHTML = html;
+    };
 
     function weatherForecast(forecastList) {
         let html = "";
+        let dayForecast = '';
+
+        dayForecast = `
+        <div class='forecast-title'>
+        <h3>5-Day Forecast:</>
+        </div>`
 
         // loop displaying every 8th object
         for (var i = 7; i < forecastList.length; i++) { 
-            console.log('index', i);
-            console.log(forecastList[i].weather);
 
             unix = forecastList[i].dt;
             unix2 = forecastList[i].dt;
@@ -100,7 +126,8 @@ function fetchWeather(event) {
             // increasing to fetch every 8th object to display weather at 24h instead of 3h
             i = i + 7;
         }
-        document.querySelector(".five-day").innerHTML = html;
+        document.querySelector(".five-day").innerHTML = dayForecast+html;
+        
     };
 
 
