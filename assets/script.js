@@ -45,29 +45,33 @@ function fetchWeather(event) {
         weatherForecast(data.list);
     });
 
-    // Create temp array
-    let tempArray = [];
+    saveSearchedCities(cityName);
+};
 
-    // Get current city name array from local storage
+function saveSearchedCities(cityName) {
+    let tempArray = [];
     let currentCities = localStorage.getItem('cityName');
 
-    // append local storage array and cityName variable to temp array
     if (currentCities !== null && currentCities !== '') {
         let array = JSON.parse(currentCities);
         tempArray.push(...array);
     };
 
     if (cityName) {
-        tempArray.push(cityName);
+        let filteredArray = tempArray.filter(item => {
+            return item !== cityName
+        }
+            );
+
+        filteredArray.push(cityName);
+        
+        localStorage.setItem('cityName', JSON.stringify(filteredArray));
+
     };
+}
 
-    // save temp array to localstorage
-    localStorage.setItem('cityName', JSON.stringify(tempArray));
-};
 
-// parse back from local storay
-    let cities = localStorage.getItem('cityName');
-
+    
     // display current weather
     function currentForecast(forecastList, cityName) {
         let html = '';
