@@ -12,7 +12,7 @@ let cityWind = "";
 let cityHumidity = "";
 let cityIcon = "";
 
-//function to fetch lat/lon from city name searched
+// function to fetch lat/lon from city name searched
 function fetchWeather(event) {
     let cityName = '';
 
@@ -175,7 +175,3 @@ function capFirstLetter(string) {
 
     return words.join(" ");
 };
-
-
-
-
