@@ -40,8 +40,8 @@
 }
 
 .search-btn {
-    background-color: #7CB9E8;
-    color: white;
+    background-color: #BEBEBE;
+    color: black;
     width: 258px;
     padding: 4.5px;
     border: 2px;
@@ -70,4 +70,9 @@
     width: 257px;
     margin-left: 0;
     margin-top: 15px;
+}
+
+#first-button {
+    background-color: #7CB9E8;
+    color: white
 }
