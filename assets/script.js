@@ -17,13 +17,12 @@ function fetchWeather(event) {
     let cityName = '';
     
     if(event.target.textContent === 'Search'){
-        cityName = document.getElementById('search-input').value;
+        cityName = capFirstLetter(document.getElementById('search-input').value);
 
     }else{
         cityName = event.target.textContent
     };
 
-    console.log('Fetch Weather 🔥');
     let APIkey = '03a65d5467760983e97224dadfa22af6';
     let url1 = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIkey}`;
 
@@ -32,23 +31,30 @@ function fetchWeather(event) {
     }).then((response) => {
         return response.json();
     }).then((data) => {
+        console.log(`data ${data}`)
+        // if(!data || data === '') {
+        //     window.alert("Sorry, city not found. Please search for a different city");
+        //     return;
+        // }
         cityLat = data[0].lat;
         cityLon = data[0].lon;
 
         let url3 = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${APIkey}&units=imperial`;
 
         return fetch(url3)
+    }).catch(err => {
+        console.log(`error: ${err}`)
+        window.alert("Sorry, city not found. Please search for a different city");
+            throw new Error('invalid city');
+
     }).then((response) => {
         return response.json();
     }).then((data) => {
 
-        // check why these two functions are not pushing the updated data to the html??
-
         currentForecast(data.list, cityName);
         weatherForecast(data.list);
+        saveSearchedCities(cityName);
     });
-
-    saveSearchedCities(cityName);
 };
 
 function saveSearchedCities(cityName) {
@@ -97,11 +103,6 @@ function displaySearchedCities() {
 function currentForecast(forecastList, cityName) {
     let html = '';
 
-    console.log(`
-    currentForecast
-    city name: ${cityName}
-    `);
-
     unix = forecastList[0].dt;
     unix2 = forecastList[0].dt;
     temp = forecastList[0].main.temp;
@@ -125,10 +126,6 @@ function currentForecast(forecastList, cityName) {
 
 function weatherForecast(forecastList) {
 
-    console.log(`
-    weather forecast
-    forecastList: ${JSON.stringify(forecastList)}
-    `)
     let html = "";
     let dayForecast = '';
 
@@ -141,7 +138,6 @@ function weatherForecast(forecastList) {
 
     // loop displaying every 8th object
     for (var i = 7; i < forecastList.length; i++) {
-
         unix = forecastList[i].dt;
         unix2 = forecastList[i].dt;
         temp = forecastList[i].main.temp;
@@ -170,6 +166,17 @@ function weatherForecast(forecastList) {
     document.querySelector(".five-day").appendChild(fiveDays)
 
     fiveDays.innerHTML = html;
+};
+
+function capFirstLetter(string){
+    
+const words = string.split(" ");
+
+for (let i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+}
+
+return words.join(" ");
 };
 
 

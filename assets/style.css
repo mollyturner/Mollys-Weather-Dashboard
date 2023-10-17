@@ -46,6 +46,7 @@
     padding: 4.5px;
     border: 2px;
     border-radius: 3px;
+    margin: 20px 0px 0px 0px;
 }
 
 #search-input {
@@ -57,11 +58,16 @@
 
 .previous-searched {
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: space-evenly;
+    flex-direction: column;
 }
 
 .all-days {
     display: flex;
     justify-content: space-between;
+}
+
+#hr {
+    width: 257px;
+    margin-left: 0;
+    margin-top: 15px;
 }
