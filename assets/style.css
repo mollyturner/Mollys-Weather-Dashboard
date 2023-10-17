@@ -26,11 +26,6 @@
     font-size: large;
 }
 
-.five-day {
-    display: flex;
-    justify-content: space-between;
-}
-
 .each-day {
     color: white;
     background-color: midnightblue;
@@ -44,7 +39,7 @@
     border-style: solid;
 }
 
-#search-btn {
+.search-btn {
     background-color: #7CB9E8;
     color: white;
     width: 258px;
@@ -58,4 +53,15 @@
     width: 250px;
     border-radius: 3px;
     padding: 8px 2px;
+}
+
+.previous-searched {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-evenly;
+}
+
+.all-days {
+    display: flex;
+    justify-content: space-between;
 }
