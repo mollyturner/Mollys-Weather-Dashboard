@@ -1,6 +1,6 @@
-//event listener for search button
 let searchBtns = document.querySelectorAll(".search-btn");
 
+// adds event listener to each button
 searchBtns.forEach(btn => {
     btn.addEventListener('click', fetchWeather);
 });
@@ -12,40 +12,33 @@ let cityWind = "";
 let cityHumidity = "";
 let cityIcon = "";
 
-//function to fetch api weather data
+//function to fetch lat/lon from city name searched
 function fetchWeather(event) {
     let cityName = '';
-    
-    if(event.target.textContent === 'Search'){
+
+    if (event.target.textContent === 'Search') {
         cityName = capFirstLetter(document.getElementById('search-input').value);
 
-    }else{
+    } else {
         cityName = event.target.textContent
     };
 
     let APIkey = '03a65d5467760983e97224dadfa22af6';
-    let url1 = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIkey}`;
+    let getLatAndLon = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIkey}`;
 
-    fetch(url1, {
+    fetch(getLatAndLon, {
         method: "GET"
     }).then((response) => {
         return response.json();
     }).then((data) => {
-        console.log(`data ${data}`)
-        // if(!data || data === '') {
-        //     window.alert("Sorry, city not found. Please search for a different city");
-        //     return;
-        // }
         cityLat = data[0].lat;
         cityLon = data[0].lon;
 
-        let url3 = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${APIkey}&units=imperial`;
+        let getWeatherData = `https://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${APIkey}&units=imperial`;
 
-        return fetch(url3)
+        return fetch(getWeatherData)
     }).catch(err => {
-        console.log(`error: ${err}`)
         window.alert("Sorry, city not found. Please search for a different city");
-            throw new Error('invalid city');
 
     }).then((response) => {
         return response.json();
@@ -57,6 +50,7 @@ function fetchWeather(event) {
     });
 };
 
+// saving searched city to local storage
 function saveSearchedCities(cityName) {
     let tempArray = [];
     let currentCities = localStorage.getItem('cityName');
@@ -80,6 +74,7 @@ function saveSearchedCities(cityName) {
     };
 }
 
+// displaying previously searched cities from local storage
 function displaySearchedCities() {
     let cities = JSON.parse(localStorage.getItem('cityName'));
     let html = '';
@@ -124,6 +119,7 @@ function currentForecast(forecastList, cityName) {
     document.querySelector(".current-search").innerHTML = html;
 };
 
+// displaying 5-day forecast
 function weatherForecast(forecastList) {
 
     let html = "";
@@ -158,7 +154,7 @@ function weatherForecast(forecastList) {
 
         // increasing to fetch every 8th object to display weather at 24h instead of 3h
         i = i + 7;
-    }
+    };
 
     const fiveDays = document.createElement('div');
     fiveDays.classList.add('all-days');
@@ -168,15 +164,16 @@ function weatherForecast(forecastList) {
     fiveDays.innerHTML = html;
 };
 
-function capFirstLetter(string){
-    
-const words = string.split(" ");
+// capitalizes first letter of city 
+function capFirstLetter(string) {
 
-for (let i = 0; i < words.length; i++) {
-    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-}
+    const words = string.split(" ");
 
-return words.join(" ");
+    for (let i = 0; i < words.length; i++) {
+        words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    }
+
+    return words.join(" ");
 };
 
 

@@ -1,5 +1,6 @@
 .grid-container {
     display: grid;
+    
     /* grid-template-columns:  */
     grid-auto-rows: minmax(100px, auto);
     grid-row-gap: 20px;
@@ -39,6 +40,7 @@
     border-style: solid;
 }
 
+/* applies to all buttons */
 .search-btn {
     background-color: #BEBEBE;
     color: black;
@@ -47,6 +49,12 @@
     border: 2px;
     border-radius: 3px;
     margin: 20px 0px 0px 0px;
+}
+
+/* applied to first button only */
+#first-button {
+    background-color: #7CB9E8;
+    color: white
 }
 
 #search-input {
@@ -72,7 +80,3 @@
     margin-top: 15px;
 }
 
-#first-button {
-    background-color: #7CB9E8;
-    color: white
-}
