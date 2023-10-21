@@ -23,7 +23,6 @@ function fetchWeather(event) {
         cityName = event.target.textContent
     };
 
-    let APIkey = '03a65d5467760983e97224dadfa22af6';
     let getLatAndLon = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${APIkey}`;
 
     fetch(getLatAndLon, {
